@@ -29,26 +29,26 @@ public struct Matrix<T where T: FloatingPointType, T: FloatLiteralConvertible> {
     let columns: Int
     var grid: [Element]
 
-    public init(rows: Int, columns: Int, repeatedValue: Element) {
+    public init(rows: Int, columns: Int, repeatedValue: T) {
         self.rows = rows
         self.columns = columns
 
         self.grid = [Element](count: rows * columns, repeatedValue: repeatedValue)
     }
 
-    public init(_ contents: [[Element]]) {
+    public init(_ contents: [[T]]) {
         let m: Int = contents.count
         let n: Int = contents[0].count
         let repeatedValue: Element = 0.0
 
         self.init(rows: m, columns: n, repeatedValue: repeatedValue)
 
-        for (i, row) in enumerate(contents) {
+        for (i, row) in contents.enumerate() {
             grid.replaceRange(i*n..<i*n+min(m, row.count), with: row)
         }
     }
 
-    public subscript(row: Int, column: Int) -> Element {
+    public subscript(row: Int, column: Int) -> T {
         get {
             assert(indexIsValidForRow(row, column: column))
             return grid[(row * columns) + column]
@@ -67,12 +67,12 @@ public struct Matrix<T where T: FloatingPointType, T: FloatLiteralConvertible> {
 
 // MARK: - Printable
 
-extension Matrix: Printable {
+extension Matrix: CustomStringConvertible {
     public var description: String {
         var description = ""
 
         for i in 0..<rows {
-            let contents = join("\t", map(0..<columns){"\(self[i, $0])"})
+            let contents = (0..<columns).map{"\(self[i, $0])"}.joinWithSeparator("\t")
 
             switch (i, rows) {
             case (0, 1):
@@ -95,11 +95,11 @@ extension Matrix: Printable {
 // MARK: - SequenceType
 
 extension Matrix: SequenceType {
-    public func generate() -> GeneratorOf<ArraySlice<Element>> {
+    public func generate() -> AnyGenerator<ArraySlice<T>> {
         let endIndex = rows * columns
         var nextRowStartIndex = 0
 
-        return GeneratorOf<ArraySlice<Element>> {
+        return anyGenerator {
             if nextRowStartIndex == endIndex {
                 return nil
             }
@@ -219,27 +219,27 @@ public func transpose(x: Matrix<Double>) -> Matrix<Double> {
 // MARK: - Operators
 
 public func + (lhs: Matrix<Float>, rhs: Matrix<Float>) -> Matrix<Float> {
-    return add(lhs, rhs)
+    return add(lhs, y: rhs)
 }
 
 public func + (lhs: Matrix<Double>, rhs: Matrix<Double>) -> Matrix<Double> {
-    return add(lhs, rhs)
+    return add(lhs, y: rhs)
 }
 
 public func * (lhs: Float, rhs: Matrix<Float>) -> Matrix<Float> {
-    return mul(lhs, rhs)
+    return mul(lhs, x: rhs)
 }
 
 public func * (lhs: Double, rhs: Matrix<Double>) -> Matrix<Double> {
-    return mul(lhs, rhs)
+    return mul(lhs, x: rhs)
 }
 
 public func * (lhs: Matrix<Float>, rhs: Matrix<Float>) -> Matrix<Float> {
-    return mul(lhs, rhs)
+    return mul(lhs, y: rhs)
 }
 
 public func * (lhs: Matrix<Double>, rhs: Matrix<Double>) -> Matrix<Double> {
-    return mul(lhs, rhs)
+    return mul(lhs, y: rhs)
 }
 
 postfix operator ′ {}
