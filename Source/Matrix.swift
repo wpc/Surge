@@ -114,7 +114,7 @@ extension Matrix: SequenceType {
 
 // MARK: -
 
-public func add(x: Matrix<Float>, y: Matrix<Float>) -> Matrix<Float> {
+public func add(x: Matrix<Float>, _ y: Matrix<Float>) -> Matrix<Float> {
     precondition(x.rows == y.rows && x.columns == y.columns, "Matrix dimensions not compatible with addition")
 
     var results = y
@@ -123,7 +123,7 @@ public func add(x: Matrix<Float>, y: Matrix<Float>) -> Matrix<Float> {
     return results
 }
 
-public func add(x: Matrix<Double>, y: Matrix<Double>) -> Matrix<Double> {
+public func add(x: Matrix<Double>, _ y: Matrix<Double>) -> Matrix<Double> {
     precondition(x.rows == y.rows && x.columns == y.columns, "Matrix dimensions not compatible with addition")
 
     var results = y
@@ -132,21 +132,21 @@ public func add(x: Matrix<Double>, y: Matrix<Double>) -> Matrix<Double> {
     return results
 }
 
-public func mul(alpha: Float, x: Matrix<Float>) -> Matrix<Float> {
+public func mul(alpha: Float, _ x: Matrix<Float>) -> Matrix<Float> {
     var results = x
     cblas_sscal(Int32(x.grid.count), alpha, &(results.grid), 1)
 
     return results
 }
 
-public func mul(alpha: Double, x: Matrix<Double>) -> Matrix<Double> {
+public func mul(alpha: Double, _ x: Matrix<Double>) -> Matrix<Double> {
     var results = x
     cblas_dscal(Int32(x.grid.count), alpha, &(results.grid), 1)
 
     return results
 }
 
-public func mul(x: Matrix<Float>, y: Matrix<Float>) -> Matrix<Float> {
+public func mul(x: Matrix<Float>, _ y: Matrix<Float>) -> Matrix<Float> {
     precondition(x.columns == y.rows, "Matrix dimensions not compatible with multiplication")
 
     var results = Matrix<Float>(rows: x.rows, columns: y.columns, repeatedValue: 0.0)
@@ -155,7 +155,7 @@ public func mul(x: Matrix<Float>, y: Matrix<Float>) -> Matrix<Float> {
     return results
 }
 
-public func mul(x: Matrix<Double>, y: Matrix<Double>) -> Matrix<Double> {
+public func mul(x: Matrix<Double>, _ y: Matrix<Double>) -> Matrix<Double> {
     precondition(x.columns == y.rows, "Matrix dimensions not compatible with multiplication")
 
     var results = Matrix<Double>(rows: x.rows, columns: y.columns, repeatedValue: 0.0)
@@ -219,27 +219,27 @@ public func transpose(x: Matrix<Double>) -> Matrix<Double> {
 // MARK: - Operators
 
 public func + (lhs: Matrix<Float>, rhs: Matrix<Float>) -> Matrix<Float> {
-    return add(lhs, y: rhs)
+    return add(lhs, rhs)
 }
 
 public func + (lhs: Matrix<Double>, rhs: Matrix<Double>) -> Matrix<Double> {
-    return add(lhs, y: rhs)
+    return add(lhs, rhs)
 }
 
 public func * (lhs: Float, rhs: Matrix<Float>) -> Matrix<Float> {
-    return mul(lhs, x: rhs)
+    return mul(lhs, rhs)
 }
 
 public func * (lhs: Double, rhs: Matrix<Double>) -> Matrix<Double> {
-    return mul(lhs, x: rhs)
+    return mul(lhs, rhs)
 }
 
 public func * (lhs: Matrix<Float>, rhs: Matrix<Float>) -> Matrix<Float> {
-    return mul(lhs, y: rhs)
+    return mul(lhs, rhs)
 }
 
 public func * (lhs: Matrix<Double>, rhs: Matrix<Double>) -> Matrix<Double> {
-    return mul(lhs, y: rhs)
+    return mul(lhs, rhs)
 }
 
 postfix operator ′ {}
