@@ -25,8 +25,8 @@ import Accelerate
 public struct Matrix<T where T: FloatingPointType, T: FloatLiteralConvertible> {
     typealias Element = T
 
-    let rows: Int
-    let columns: Int
+    public let rows: Int
+    public let columns: Int
     var grid: [Element]
 
     public init(rows: Int, columns: Int, repeatedValue: T) {
