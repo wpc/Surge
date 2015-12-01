@@ -64,6 +64,23 @@ public func max(x: [Double]) -> Double {
     return result
 }
 
+// MARK: Index of max value
+
+public func maxi(x: [Float]) -> Int {
+    var max: Float = 0.0
+    var index: vDSP_Length = vDSP_Length(0)
+    vDSP_maxvi(x, 1, &max, &index, vDSP_Length(x.count))
+
+    return Int(index)
+}
+
+public func maxi(x: [Double]) -> Int {
+    var max: Double = 0.0
+    var index: vDSP_Length = vDSP_Length(0)
+    vDSP_maxviD(x, 1, &max, &index, vDSP_Length(x.count))
+    return Int(index)
+}
+
 // MARK: Minimum
 
 public func min(x: [Float]) -> Float {

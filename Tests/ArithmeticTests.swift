@@ -31,4 +31,9 @@ class ArithmeticTests: XCTestCase {
         let values = (0...n).map{_ in Double(arc4random())}
         measureAndValidateMappedFunctionWithAccuracy(values, member: sqrt, mapped: sqrt, accuracy: 0.0001)
     }
+
+    func test_maxi() {
+        XCTAssertEqual(3, maxi([0.2, 0.0, -1.8, 3.2, 2.9]))
+        XCTAssertEqual(0, maxi([0.0, 0.0]))
+    }
 }
